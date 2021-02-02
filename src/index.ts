@@ -15,7 +15,7 @@ const QUESTIONS = [
     {
         name: 'template',
         type: 'list',
-        message: 'What template would you like to use?',
+        message: 'Welcome to the Next-Typescript generator, \n What template would you like to use?',
         choices: CHOICES
     },
     {
@@ -51,7 +51,6 @@ inquirer.prompt(QUESTIONS).then((answers: Answers) => {
     const projectName = answers['name'];
     const dependencies = answers['dependencies'];
     const packageManager = answers['package-manager'];
-    console.log(packageManager);
 
     //@ts-ignore
     const templatePath = path.join(__dirname, 'templates', projectChoice);
@@ -89,7 +88,7 @@ function createProject(projectPath: string) {
     return true;
 }
 
-const SKIP_FILES = ['node_modules', '.template.json', '.next'];
+const SKIP_FILES = ['node_modules', '.template.json', '.next', 'yarn.lock', 'package-lock.json'];
 
 function createDirectoryContents(templatePath: string, projectName: string) {
     // read all files/folders (1 level) from template folder
