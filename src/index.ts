@@ -6,6 +6,8 @@ import * as inquirer from 'inquirer';
 import chalk from 'chalk';
 import * as template from './utils/template';
 import * as shell from 'shelljs';
+import {Answers} from 'inquirer';
+import {ShellString} from "shelljs";
 
 const CHOICES = fs.readdirSync(path.join(__dirname, 'templates'));
 const QUESTIONS = [
@@ -19,7 +21,20 @@ const QUESTIONS = [
         name: 'name',
         type: 'input',
         message: 'Please input a new project name:'
-    }];
+    },
+    {
+        name: 'dependencies',
+        type: 'confirm',
+        message: 'Do you want us to install the dependencies for your project?'
+    },
+    {
+        name: 'package-manager',
+        type: 'list',
+        message: 'Do you want to install the dependencies with which package manager?',
+        when: function(answers: Answers){return answers.dependencies},
+        choices: ['Yarn', 'NPM']
+    }
+];
 
 export interface CliOptions {
     projectName: string
@@ -30,9 +45,13 @@ export interface CliOptions {
 
 const CURR_DIR = process.cwd();
 
-inquirer.prompt(QUESTIONS).then(answers => {
+inquirer.prompt(QUESTIONS).then((answers: Answers) => {
     const projectChoice = answers['template'];
     const projectName = answers['name'];
+    const dependencies = answers['dependencies'];
+    const packageManager = answers['package-manager'];
+    console.log(packageManager);
+
     //@ts-ignore
     const templatePath = path.join(__dirname, 'templates', projectChoice);
     //@ts-ignore
@@ -45,7 +64,7 @@ inquirer.prompt(QUESTIONS).then(answers => {
         templateName: projectChoice,
         templatePath,
         tartgetPath
-    }
+    };
 
     if (!createProject(tartgetPath)) {
         return;
@@ -54,7 +73,9 @@ inquirer.prompt(QUESTIONS).then(answers => {
     //@ts-ignore
     createDirectoryContents(templatePath, projectName);
 
-    postProcess(options);
+    if(dependencies) {
+        postProcess(options, packageManager);
+    }
 });
 
 function createProject(projectPath: string) {
@@ -67,7 +88,7 @@ function createProject(projectPath: string) {
     return true;
 }
 
-const SKIP_FILES = ['node_modules', '.template.json'];
+const SKIP_FILES = ['node_modules', '.template.json', '.next'];
 
 function createDirectoryContents(templatePath: string, projectName: string) {
     // read all files/folders (1 level) from template folder
@@ -98,15 +119,23 @@ function createDirectoryContents(templatePath: string, projectName: string) {
     });
 }
 
-function postProcess(options: CliOptions) {
+function postProcess(options: CliOptions, packageManager: string) {
     const isNode = fs.existsSync(path.join(options.templatePath, 'package.json'));
     if (isNode) {
         shell.cd(options.tartgetPath);
-        const result = shell.exec('npm install');
+        let result: ShellString;
+
+        if(packageManager == 'NPM') {
+            result = shell.exec('npm install');
+        } else if (packageManager == 'Yarn') {
+            result = shell.exec('yarn');
+        } else {
+            return false
+        }
+
         if (result.code !== 0) {
             return false;
         }
     }
-
     return true;
 }

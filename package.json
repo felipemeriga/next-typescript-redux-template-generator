@@ -5,7 +5,8 @@
   "main": "index.ts",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "build": "tsc && shx rm -rf dist/templates && shx cp -r src/templates dist"
+    "build": "rm -rf dist/ && tsc && shx rm -rf dist/templates && shx cp -r src/templates dist",
+    "typescript": "tsc"
   },
   "bin": {
     "template-generator": "./dist/index.js"
