@@ -10,6 +10,7 @@ import {Answers} from 'inquirer';
 import {ShellString} from "shelljs";
 
 const CHOICES = fs.readdirSync(path.join(__dirname, 'templates'));
+const PACKAGE_MANAGERS = ['Yarn', 'NPM'];
 const QUESTIONS = [
     {
         name: 'template',
@@ -32,7 +33,7 @@ const QUESTIONS = [
         type: 'list',
         message: 'Do you want to install the dependencies with which package manager?',
         when: function(answers: Answers){return answers.dependencies},
-        choices: ['Yarn', 'NPM']
+        choices: PACKAGE_MANAGERS
     }
 ];
 
