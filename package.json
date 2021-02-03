@@ -1,6 +1,6 @@
 {
-  "name": "next-typescript-redux-template-generator",
-  "version": "1.0.0",
+  "name": "@felipemeriga/next-generator",
+  "version": "1.0.2",
   "description": "",
   "main": "index.ts",
   "scripts": {
@@ -9,10 +9,21 @@
     "typescript": "tsc"
   },
   "bin": {
-    "template-generator": "./dist/index.js"
+    "@felipemeriga/next-generator": "bin/next-generator",
+    "next-generator": "./dist/index.js"
   },
-  "author": "",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "typescript",
+    "next",
+    "redux",
+    "react"
+  ],
+  "author": "felipemeriga",
   "license": "ISC",
+  "prepublish": "npm run build",
   "devDependencies": {
     "@types/ejs": "^3.0.5",
     "@types/inquirer": "^7.3.1",
@@ -25,6 +36,7 @@
   },
   "dependencies": {
     "ejs": "^3.1.5",
-    "inquirer": "^7.3.3"
+    "inquirer": "^7.3.3",
+    "shelljs": "^0.8.4"
   }
 }
