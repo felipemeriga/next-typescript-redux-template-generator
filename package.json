@@ -19,8 +19,14 @@
     "typescript",
     "next",
     "redux",
-    "react"
+    "react",
+    "javascript",
+    "frontend",
+    "thunk"
   ],
+  "repository": {
+    "url": "https://github.com/felipemeriga/next-typescript-redux-template-generator"
+  },
   "author": "felipemeriga",
   "license": "ISC",
   "prepublish": "npm run build",

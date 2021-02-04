@@ -1,4 +1,4 @@
-# next-typescript-redux-template-generator
+# next-generator
 
 ## Introduction
 
