@@ -9,13 +9,16 @@ import * as shell from 'shelljs';
 import {Answers} from 'inquirer';
 import {ShellString} from "shelljs";
 
+
+console.log(chalk.green.bold('Welcome to the Next-Typescript generator \n'));
+
 const CHOICES = fs.readdirSync(path.join(__dirname, 'templates'));
 const PACKAGE_MANAGERS = ['Yarn', 'NPM'];
 const QUESTIONS = [
     {
         name: 'template',
         type: 'list',
-        message: 'Welcome to the Next-Typescript generator, \n What template would you like to use?',
+        message: 'What template would you like to use?',
         choices: CHOICES
     },
     {
@@ -76,6 +79,8 @@ inquirer.prompt(QUESTIONS).then((answers: Answers) => {
     if(dependencies) {
         postProcess(options, packageManager);
     }
+
+    console.log(chalk.green.bold('\n Your project is ready to go'));
 });
 
 function createProject(projectPath: string) {
